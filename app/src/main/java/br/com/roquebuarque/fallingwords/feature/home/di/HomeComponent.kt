@@ -1,6 +1,6 @@
 package br.com.roquebuarque.fallingwords.feature.di
 
-import br.com.roquebuarque.fallingwords.feature.presentation.HomeActivity
+import br.com.roquebuarque.fallingwords.feature.home.presentation.activities.HomeActivity
 import dagger.Subcomponent
 
 

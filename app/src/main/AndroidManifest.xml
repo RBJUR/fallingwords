@@ -10,7 +10,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme" tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".feature.presentation.HomeActivity">
+        <activity android:name="br.com.roquebuarque.fallingwords.feature.home.presentation.activities.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

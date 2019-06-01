@@ -15,11 +15,11 @@ data class HomeState(
     val error: Throwable? = null
 ) : BaseState {
     companion object {
-        const val IDLE = 0
-        const val START = 1
-        const val LEVEL = 2
-        const val RUNING = 3
-        const val ANSWER = 4
+        const val INFLIGHT = 0
+        const val IDLE = 1
+        const val START = 2
+        const val LEVEL = 3
+        const val RUNNING = 4
         const val RESULT = 5
         const val NEXT = 6
         const val FINISH = 7

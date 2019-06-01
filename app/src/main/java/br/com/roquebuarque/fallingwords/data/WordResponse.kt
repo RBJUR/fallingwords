@@ -4,5 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class WordResponse(
     @SerializedName("text_eng") val eng: String,
-    @SerializedName("text_spa") val spa: String
+    @SerializedName("text_spa") val spa: String,
+    @SerializedName("is_right") val isRight: Boolean
 )

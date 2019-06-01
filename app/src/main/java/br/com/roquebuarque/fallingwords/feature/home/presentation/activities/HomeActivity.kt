@@ -12,8 +12,7 @@ import br.com.roquebuarque.fallingwords.feature.home.di.HomeComponent
 import br.com.roquebuarque.fallingwords.feature.home.presentation.HomeIntent
 import br.com.roquebuarque.fallingwords.feature.home.presentation.HomeState
 import br.com.roquebuarque.fallingwords.feature.home.presentation.HomeViewModel
-import br.com.roquebuarque.fallingwords.feature.home.presentation.fragments.HomeLevelFragment
-import br.com.roquebuarque.fallingwords.feature.home.presentation.fragments.HomeStartFragment
+import br.com.roquebuarque.fallingwords.feature.home.presentation.fragments.*
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
@@ -21,7 +20,10 @@ import javax.inject.Inject
 
 class HomeActivity : BaseActivityInjecting<HomeComponent>() {
 
+    private val initialIntent by lazy { PublishSubject.create<HomeIntent.InitialIntent>() }
+    private val finishIntent by lazy { PublishSubject.create<HomeIntent.Finish>() }
     private val startIntent by lazy { PublishSubject.create<HomeIntent.StartIntent>() }
+    private val resultIntent by lazy { PublishSubject.create<HomeIntent.ResultIntent>() }
     private val selectLevelIntent by lazy { PublishSubject.create<HomeIntent.SelectLevelIntent>() }
     private val selectAnswerIntent by lazy { PublishSubject.create<HomeIntent.SelectAnswerIntent>() }
 
@@ -38,7 +40,6 @@ class HomeActivity : BaseActivityInjecting<HomeComponent>() {
         setContentView(layoutResId)
 
         viewModel.processIntents(intents())
-
         viewModel.state.observe(this, Observer {
             if (it != null) {
                 render(it)
@@ -47,42 +48,65 @@ class HomeActivity : BaseActivityInjecting<HomeComponent>() {
 
     }
 
+    override fun onStart() {
+        super.onStart()
+        create()
+    }
+
+    private fun create() {
+        initialIntent.onNext(HomeIntent.InitialIntent)
+    }
+
     private fun render(state: HomeState) {
 
         val fm = supportFragmentManager
-        var fragment:Fragment? = null
+        var fragment: Fragment? = null
 
-       if(state.type == HomeState.START){
-          fragment = HomeStartFragment.newInstance(::start)
-       }else if(state.type == HomeState.LEVEL){
-           fragment = HomeLevelFragment.newInstance(::level)
-       }
+        when {
+            state.type == HomeState.START -> fragment = HomeStartFragment.newInstance(::start)
+            state.type == HomeState.LEVEL -> fragment = HomeLevelFragment.newInstance(::level)
+            state.type == HomeState.RESULT -> fragment = HomeResultFragment.newInstance(state.result,::result)
+            state.type == HomeState.FINISH -> fragment = HomeFinishFragment.newInstance(){finishIntent.onNext(HomeIntent.Finish)}
+            state.type == HomeState.RUNNING  -> fragment =
+                HomeRunningFragment.newInstance(
+                    state.data[state.index].eng,
+                    state.data[state.index].spa,
+                    ::next
+                )
+        }
 
         fragment?.let {
             fm.beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit()
         }
-
-
     }
 
     private fun level(levelSelected: Int) {
         selectLevelIntent.onNext(HomeIntent.SelectLevelIntent(levelSelected))
     }
 
+    private fun result() {
+        resultIntent.onNext(HomeIntent.ResultIntent)
+    }
+
+    private fun next(option:Int) {
+        selectAnswerIntent.onNext(HomeIntent.SelectAnswerIntent(option))
+    }
+
     private fun intents(): Observable<HomeIntent> {
-        return Observable.merge(
-            Observable.just(HomeIntent.InitialIntent),
+        return Observable.mergeArray(
+            initialIntent,
             startIntent,
             selectLevelIntent,
-            selectAnswerIntent
+            selectAnswerIntent,
+            resultIntent,
+            finishIntent
         )
     }
 
     private fun start() {
         startIntent.onNext(HomeIntent.StartIntent)
-        Timber.d(HomeActivity::class.java.name, "Started")
     }
 
     override fun onInject(component: HomeComponent) {

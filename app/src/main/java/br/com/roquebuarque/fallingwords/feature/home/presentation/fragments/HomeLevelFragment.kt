@@ -9,7 +9,6 @@ import br.com.roquebuarque.fallingwords.R
 import kotlinx.android.synthetic.main.fragment_home_level.*
 
 
-
 class HomeLevelFragment : Fragment() {
 
     private var level = 1

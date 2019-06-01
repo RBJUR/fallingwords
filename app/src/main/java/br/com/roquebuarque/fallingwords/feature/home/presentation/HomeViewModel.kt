@@ -8,7 +8,6 @@ import io.reactivex.ObservableTransformer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
-import timber.log.Timber
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(private val usecase: RetrieveWords) : ViewModel() {
@@ -46,6 +45,7 @@ class HomeViewModel @Inject constructor(private val usecase: RetrieveWords) : Vi
         .map(this::actionFromIntent)
         .compose(usecase.transformerFromAction())
         .scan(HomeState.idle(), reducer)
+        .distinctUntilChanged()
         .replay(1)
         .autoConnect(0)
 
@@ -54,53 +54,19 @@ class HomeViewModel @Inject constructor(private val usecase: RetrieveWords) : Vi
         return when (intent) {
             is HomeIntent.InitialIntent -> HomeAction.Start
             is HomeIntent.StartIntent -> HomeAction.Load
+            is HomeIntent.ResultIntent -> HomeAction.Result
+            is HomeIntent.Finish -> HomeAction.Finish
             is HomeIntent.SelectLevelIntent -> HomeAction.SelectLevel(intent.levelId)
-            is HomeIntent.SelectAnswerIntent -> HomeAction.SelectAnswer(intent.answerId, intent.isRight)
+            is HomeIntent.SelectAnswerIntent -> HomeAction.SelectAnswer(intent.option)
+            else -> throw IllegalArgumentException("unknown intent")
+
+
         }
     }
 
     companion object {
         private val reducer = BiFunction { previousState: HomeState, result: WordResult ->
-            when (result) {
-                is WordResult.LoadResult.Success -> {
-                    Timber.d( "WordResult.LoadResult: Success")
-
-                    previousState.copy(
-                        type = HomeState.LEVEL, data = result.data
-                    )
-                }
-                is WordResult.LoadResult.Failure -> {
-                    Timber.d( "WordResult.LoadResult: Failure")
-                    previousState.copy(error = IllegalArgumentException("something went wrong"))
-
-                }
-
-                WordResult.LoadResult.InFlight -> {
-                    Timber.d("WordResult.LoadResult: InFlight")
-                    previousState.copy()
-                }
-                WordResult.LoadResult.Start -> {
-                    Timber.d( "WordResult.LoadResult: Start")
-                    previousState.copy(type = HomeState.START)
-                }
-
-                is WordResult.SelectLevelResult.Success -> {
-                    Timber.d( "WordResult.SelectLevelResult: Success")
-                    previousState.copy(time = result.time, size = result.size)
-
-                }
-
-                is WordResult.SelectLevelResult.Failure -> {
-                    Timber.d("WordResult.SelectLevelResult: Failure")
-                    previousState.copy(error = IllegalArgumentException("something went wrong"))
-                }
-
-                WordResult.SelectLevelResult.InFlight ->{
-                    Timber.d("WordResult.SelectLevelResult: InFlight")
-                    previousState.copy()
-
-                }
-            }
+           StateMapper(previousState, result)
         }
     }
 }

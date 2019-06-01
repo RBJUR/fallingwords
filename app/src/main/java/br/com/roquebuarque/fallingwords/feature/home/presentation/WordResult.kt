@@ -9,7 +9,6 @@ sealed class WordResult {
         data class Failure(val error: Throwable?) : WordResult()
         object InFlight : WordResult()
         object Start : WordResult()
-
     }
 
     sealed class SelectLevelResult : WordResult() {
@@ -19,5 +18,25 @@ sealed class WordResult {
 
     }
 
+    sealed class SelectAnswerResult : WordResult() {
+        data class Success(val option: Int) : WordResult()
+        data class Failure(val error: Throwable) : WordResult()
+        object InFlight : WordResult()
+
+    }
+
+    sealed class NextAnswerResult : WordResult() {
+        object Success : WordResult()
+        data class Failure(val error: Throwable) : WordResult()
+        object InFlight : WordResult()
+
+    }
+
+    sealed class FinishResult : WordResult() {
+        object Success : WordResult()
+        data class Failure(val error: Throwable) : WordResult()
+        object InFlight : WordResult()
+
+    }
 
 }

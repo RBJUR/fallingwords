@@ -11,4 +11,7 @@
     <string name="easy">Easy</string>
     <string name="medium">Medium</string>
     <string name="hard">Hard</string>
+    <string name="wrong">WRONG</string>
+    <string name="right">RIGHT</string>
+    <string name="play_again">Play again</string>
 </resources>

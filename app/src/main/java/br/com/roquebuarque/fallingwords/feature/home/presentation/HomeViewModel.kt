@@ -1,6 +1,5 @@
 package br.com.roquebuarque.fallingwords.feature.home.presentation
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import br.com.roquebuarque.fallingwords.feature.home.domain.RetrieveWords
@@ -47,7 +46,6 @@ class HomeViewModel @Inject constructor(private val usecase: RetrieveWords) : Vi
         .map(this::actionFromIntent)
         .compose(usecase.transformerFromAction())
         .scan(HomeState.idle(), reducer)
-        .distinctUntilChanged()
         .replay(1)
         .autoConnect(0)
 
@@ -55,9 +53,9 @@ class HomeViewModel @Inject constructor(private val usecase: RetrieveWords) : Vi
     private fun actionFromIntent(intent: HomeIntent): HomeAction {
         return when (intent) {
             is HomeIntent.InitialIntent -> HomeAction.Start
+            is HomeIntent.StartIntent -> HomeAction.Load
             is HomeIntent.SelectLevelIntent -> HomeAction.SelectLevel(intent.levelId)
             is HomeIntent.SelectAnswerIntent -> HomeAction.SelectAnswer(intent.answerId, intent.isRight)
-            else -> throw IllegalArgumentException("unknown intent")
         }
     }
 

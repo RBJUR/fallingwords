@@ -12,6 +12,7 @@ import br.com.roquebuarque.fallingwords.feature.home.di.HomeComponent
 import br.com.roquebuarque.fallingwords.feature.home.presentation.HomeIntent
 import br.com.roquebuarque.fallingwords.feature.home.presentation.HomeState
 import br.com.roquebuarque.fallingwords.feature.home.presentation.HomeViewModel
+import br.com.roquebuarque.fallingwords.feature.home.presentation.fragments.HomeLevelFragment
 import br.com.roquebuarque.fallingwords.feature.home.presentation.fragments.HomeStartFragment
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -53,6 +54,8 @@ class HomeActivity : BaseActivityInjecting<HomeComponent>() {
 
        if(state.type == HomeState.START){
           fragment = HomeStartFragment.newInstance(::start)
+       }else if(state.type == HomeState.LEVEL){
+           fragment = HomeLevelFragment.newInstance(::level)
        }
 
         fragment?.let {
@@ -62,6 +65,10 @@ class HomeActivity : BaseActivityInjecting<HomeComponent>() {
         }
 
 
+    }
+
+    private fun level(levelSelected: Int) {
+        selectLevelIntent.onNext(HomeIntent.SelectLevelIntent(levelSelected))
     }
 
     private fun intents(): Observable<HomeIntent> {

@@ -4,7 +4,7 @@ package br.com.roquebuarque.fallingwords.application.di
 import android.content.Context
 import br.com.roquebuarque.fallingwords.application.AppApplication
 import br.com.roquebuarque.fallingwords.feature.di.ActivityModule
-import br.com.roquebuarque.fallingwords.feature.di.HomeComponent
+import br.com.roquebuarque.fallingwords.feature.home.di.HomeComponent
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton

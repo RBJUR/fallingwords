@@ -1,4 +1,4 @@
-package br.com.roquebuarque.bitcoinchart.presentation.di
+package br.com.roquebuarque.fallingwords.feature.home.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

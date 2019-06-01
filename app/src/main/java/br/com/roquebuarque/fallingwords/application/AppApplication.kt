@@ -3,6 +3,7 @@ package br.com.roquebuarque.fallingwords.application
 import android.app.Application
 import br.com.roquebuarque.fallingwords.application.di.ApplicationComponent
 import br.com.roquebuarque.fallingwords.application.di.DaggerApplicationComponent
+import timber.log.Timber
 
 class AppApplication:Application() {
 
@@ -11,6 +12,9 @@ class AppApplication:Application() {
     override fun onCreate() {
         super.onCreate()
         getComponent().inject(this)
+
+        //TODO RULE FOR BUILD VARIANT
+        Timber.plant(Timber.DebugTree())
 
     }
 

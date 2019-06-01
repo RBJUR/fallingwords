@@ -1,5 +1,7 @@
-package br.com.roquebuarque.fallingwords.feature.di
+package br.com.roquebuarque.fallingwords.feature.home.di
 
+import br.com.roquebuarque.fallingwords.feature.di.ActivityModule
+import br.com.roquebuarque.fallingwords.feature.di.ActivityScope
 import br.com.roquebuarque.fallingwords.feature.home.presentation.activities.HomeActivity
 import dagger.Subcomponent
 

@@ -1,4 +1,4 @@
-package br.com.roquebuarque.fallingwords.feature
+package br.com.roquebuarque.fallingwords.feature.base
 
 import android.os.Bundle
 

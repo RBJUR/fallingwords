@@ -23,8 +23,10 @@ object StateMapper {
                         size = result.size
                     )
                     result.type == HomeResult.ANSWER_RESULT -> {
-                        val isRight =
-                            (result.selectedAnswer == IntentKey.RIGHT) == previousState.data[previousState.index].isRight
+
+                        val random = (IntentKey.RIGHT..IntentKey.WRONG).random()
+                        Timber.d("random: $random")
+                        val isRight = result.selectedAnswer == random
                         previousState.copy(
                             type = if (previousState.index < previousState.data.size) HomeState.RESULT else HomeState.FINISH,
                             index = previousState.index + 1,

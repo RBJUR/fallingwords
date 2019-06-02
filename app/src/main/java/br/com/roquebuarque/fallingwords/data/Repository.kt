@@ -10,11 +10,11 @@ class Repository @Inject constructor() {
 
     private fun createMock() =
         listOf(
-            WordResponse(eng = "abc", spa = "def", isRight = true),
-            WordResponse(eng = "ghi", spa = "jkl", isRight = true),
-            WordResponse(eng = "mno", spa = "pqr", isRight = false),
-            WordResponse(eng = "hallo", spa = "hello", isRight = false),
-            WordResponse(eng = "house", spa = "haus", isRight = true)
+            WordResponse(eng = "abc", spa = "def"),
+            WordResponse(eng = "ghi", spa = "jkl"),
+            WordResponse(eng = "mno", spa = "pqr"),
+            WordResponse(eng = "hallo", spa = "hello"),
+            WordResponse(eng = "house", spa = "haus")
         )
 
 }

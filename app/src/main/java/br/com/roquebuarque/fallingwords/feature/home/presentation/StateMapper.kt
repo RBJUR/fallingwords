@@ -23,13 +23,14 @@ object StateMapper {
                         size = result.size
                     )
                     result.type == HomeResult.ANSWER_RESULT -> {
-                        val isRight = (result.selectedAnswer == 1) == previousState.data[previousState.index].isRight
+                        val isRight =
+                            (result.selectedAnswer == IntentKey.RIGHT) == previousState.data[previousState.index].isRight
                         previousState.copy(
                             type = if (previousState.index < previousState.data.size) HomeState.RESULT else HomeState.FINISH,
                             index = previousState.index + 1,
-                            countWrong = if (!isRight) previousState.countWrong + 1 else previousState.countWrong,
-                            countRight = if (isRight) previousState.countRight + 1 else previousState.countRight,
-                            result = isRight
+                            countWrong = if (!isRight || result.selectedAnswer == IntentKey.NO_ANSWER) previousState.countWrong + 1 else previousState.countWrong,
+                            countRight = if (isRight && result.selectedAnswer != IntentKey.NO_ANSWER) previousState.countRight + 1 else previousState.countRight,
+                            result = if (result.selectedAnswer != IntentKey.NO_ANSWER) isRight else false
                         )
                     }
                     result.type == HomeResult.NEXT -> previousState.copy(type = if (previousState.index < previousState.data.size) HomeState.RUNNING else HomeState.FINISH)

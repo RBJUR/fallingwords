@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.fragment_home_running.*
 import android.graphics.Point
 import android.view.ViewTreeObserver
 import android.view.animation.BounceInterpolator
+import br.com.roquebuarque.fallingwords.feature.home.presentation.IntentKey
 
 
 class HomeRunningFragment : Fragment() {
@@ -39,7 +40,7 @@ class HomeRunningFragment : Fragment() {
                 }
 
                 override fun onFinish() {
-                    callback(3)
+                    callback(IntentKey.NO_ANSWER)
                 }
             }
             timer?.start()
@@ -68,12 +69,12 @@ class HomeRunningFragment : Fragment() {
 
         btnRightRunning.setOnClickListener {
             timer?.cancel()
-            callback(2)
+            callback(IntentKey.RIGHT)
         }
 
         btnWrongRunning.setOnClickListener {
             timer?.cancel()
-            callback(1)
+            callback(IntentKey.WRONG)
         }
     }
 

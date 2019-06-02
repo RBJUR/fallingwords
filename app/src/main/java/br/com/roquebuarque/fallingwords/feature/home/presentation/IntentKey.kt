@@ -7,5 +7,6 @@ class IntentKey {
         const val HARD = 3
         const val RIGHT = 4
         const val WRONG = 5
+        const val NO_ANSWER = 6
     }
 }

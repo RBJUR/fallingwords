@@ -2,7 +2,7 @@
     <string name="app_name">Falling Words</string>
 
     <!--HOME ACTIVITY -->
-    <string name="home_description">We are so happy to see you! It is a simple word game\n\n1- You need to answer if the translation is right or wrong.\n\n2- You have time to answer so be fast.\n\nAre you ready?
+    <string name="home_description">We are so happy to see you! It is a simple word game\n\n1- You need to answer if the translation is right or wrong.\n2- You have time to answer.\n\nAre you ready?
     </string>
     <string name="home_title">Welcome</string>
     <string name="start">Start</string>

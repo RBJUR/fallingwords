@@ -11,7 +11,6 @@ class AppApplication:Application() {
 
     override fun onCreate() {
         super.onCreate()
-        getComponent().inject(this)
 
         //TODO RULE FOR BUILD VARIANT
         Timber.plant(Timber.DebugTree())

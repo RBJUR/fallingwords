@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import br.com.roquebuarque.fallingwords.R
+import br.com.roquebuarque.fallingwords.feature.home.presentation.IntentKey
 import kotlinx.android.synthetic.main.fragment_home_level.*
 
 
@@ -29,11 +30,10 @@ class HomeLevelFragment : Fragment() {
 
         rdEasyLevel.isChecked = true
         rdGroupLevel.setOnCheckedChangeListener { _, _ ->
-            //TODO CREATE KEYS FOR LEVEL VALUE
             when {
-                rdEasyLevel.isChecked -> level = 1
-                rdMediumLevel.isChecked -> level = 2
-                rdHardLevel.isChecked -> level = 3
+                rdEasyLevel.isChecked -> level = IntentKey.EASY
+                rdMediumLevel.isChecked -> level = IntentKey.MEDIUM
+                rdHardLevel.isChecked -> level = IntentKey.HARD
             }
         }
     }

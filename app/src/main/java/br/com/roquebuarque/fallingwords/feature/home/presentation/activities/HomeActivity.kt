@@ -56,21 +56,15 @@ class HomeActivity : BaseActivityInjecting<HomeComponent>() {
     private fun render(state: HomeState) {
 
         val fm = supportFragmentManager
-        var fragment: Fragment? = null
-
-        when {
-            state.type == HomeState.START -> fragment = HomeStartFragment.newInstance(::start)
-            state.type == HomeState.LEVEL -> fragment = HomeLevelFragment.newInstance(::level)
-            state.type == HomeState.RESULT -> fragment = HomeResultFragment.newInstance(state.result, ::result)
-            state.type == HomeState.FINISH -> fragment =
-                HomeFinishFragment.newInstance(::finishIntent)
-            state.type == HomeState.RUNNING -> fragment =
-                HomeRunningFragment.newInstance(
-                    state.data[state.index].eng,
-                    state.data[state.index].spa,
-                    (state.time * 1000).toLong(),
-                    ::next
-                )
+        val fragment = when (state.type) {
+            HomeState.START -> HomeStartFragment.newInstance(::start)
+            HomeState.LEVEL -> HomeLevelFragment.newInstance(::level)
+            HomeState.RESULT -> HomeResultFragment.newInstance(state.result, ::result)
+            HomeState.FINISH -> HomeFinishFragment.newInstance(::finishIntent)
+            HomeState.RUNNING -> with(state) {
+                HomeRunningFragment.newInstance(data[index].eng, data[index].spa, (time * 1000).toLong(), ::next)
+            }
+            else -> null
         }
 
         fragment?.let {
@@ -113,8 +107,8 @@ class HomeActivity : BaseActivityInjecting<HomeComponent>() {
     }
 
     override fun createComponent(): HomeComponent {
-        val app = AppApplication::class.java.cast(application)
-        val activityModule = ActivityModule(this)
-        return app?.getComponent()!!.createHomeActivityComponent(activityModule)
+        return (application as AppApplication)
+            .getComponent()
+            .createHomeActivityComponent(ActivityModule(this))
     }
 }

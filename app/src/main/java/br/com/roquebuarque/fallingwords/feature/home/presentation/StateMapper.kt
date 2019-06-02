@@ -24,9 +24,7 @@ object StateMapper {
                         data = previousState.data.take(previousState.data.size/result.size)
                     )
                     result.type == HomeResult.ANSWER_RESULT -> {
-
                         val random = (IntentKey.RIGHT..IntentKey.WRONG).random()
-                        Timber.d("random: $random")
                         val isRight = result.selectedAnswer == random
                         previousState.copy(
                             type = if (previousState.index < previousState.data.size) HomeState.RESULT else HomeState.FINISH,
@@ -50,7 +48,7 @@ object StateMapper {
             is HomeResult.Failure -> {
                 Timber.d("HomeResult: Failure")
                 previousState.copy(
-                    error = IllegalArgumentException("something went wrong")
+                    error = result.error
                 )
 
             }

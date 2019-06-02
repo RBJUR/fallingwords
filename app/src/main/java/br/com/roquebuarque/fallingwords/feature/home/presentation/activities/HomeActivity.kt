@@ -68,6 +68,7 @@ class HomeActivity : BaseActivityInjecting<HomeComponent>() {
                 HomeRunningFragment.newInstance(
                     state.data[state.index].eng,
                     state.data[state.index].spa,
+                    (state.time * 1000).toLong(),
                     ::next
                 )
         }

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <TextView
+            android:id="@+id/txtTimeRunning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            tools:text="15s"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="8dp"/>
+
+
+    <TextView
+            android:id="@+id/txtMainWordRunning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            tools:text="Hello"
+            android:layout_centerVertical="true"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginEnd="20dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:layout_toStartOf="@+id/divisor"
+    />
+
+
+    <View android:id="@+id/divisor"
+          android:layout_width="1dp"
+          android:layout_centerHorizontal="true"
+          android:background="@color/colorPrimary"
+          android:layout_height="match_parent"
+          android:layout_margin="20dp"/>
+
+    <TextView
+            android:id="@+id/txtTranslationWordRunning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            tools:text="Hallo"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:layout_toEndOf="@+id/divisor"/>
+
+
+    <LinearLayout
+            android:id="@+id/ctnButtonsRunning"
+            android:weightSum="2"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_height="wrap_content">
+
+        <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnWrongRunning"
+                android:text="@string/wrong"
+                android:textAllCaps="false"
+                android:layout_margin="10dp"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/white"/>
+
+
+        <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnRightRunning"
+                android:text="@string/right"
+                android:layout_margin="10dp"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/white"
+                android:textAllCaps="false"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

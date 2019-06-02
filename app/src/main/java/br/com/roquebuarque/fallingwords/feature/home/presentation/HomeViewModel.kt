@@ -38,22 +38,7 @@ class HomeViewModel @Inject constructor(private val usecase: RetrieveWords) : Vi
         .autoConnect(0)
 
 
-    private fun actionFromIntent(intent: HomeIntent): HomeAction {
-        return when (intent) {
-            is HomeIntent.CommonIntent -> {
-                if (intent.intentKey == HomeIntent.START) {
-                    HomeAction.Load
-                } else {
-                    HomeAction.CommonAction(intent.intentKey)
-                }
-            }
-            is HomeIntent.SelectLevelIntent -> HomeAction.SelectLevel(intent.levelId)
-            is HomeIntent.SelectAnswerIntent -> HomeAction.SelectAnswer(intent.option)
-            else -> throw IllegalArgumentException("unknown intent")
-
-
-        }
-    }
+    private fun actionFromIntent(intent: HomeIntent) = HomeIntentMapper(intent)
 
     companion object {
         private val reducer = BiFunction { previousState: HomeState, result: HomeResult ->

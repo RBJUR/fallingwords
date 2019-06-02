@@ -7,11 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import br.com.roquebuarque.fallingwords.R
-import kotlinx.android.synthetic.main.fragment_home_runningv2.*
+import kotlinx.android.synthetic.main.fragment_home_running.*
 import android.graphics.Point
 import android.view.ViewTreeObserver
 import android.view.animation.BounceInterpolator
-import timber.log.Timber
 
 
 class HomeRunningFragment : Fragment() {
@@ -23,7 +22,7 @@ class HomeRunningFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? =
-        inflater.inflate(R.layout.fragment_home_runningv2, container, false)
+        inflater.inflate(R.layout.fragment_home_running, container, false)
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -15,4 +15,5 @@
     <string name="right">RIGHT</string>
     <string name="play_again">Play again</string>
     <string name="score">SCORE</string>
+    <string name="correct">CORRECT</string>
 </resources>

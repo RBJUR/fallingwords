@@ -38,17 +38,17 @@ class HomeViewModel @Inject constructor(private val usecase: RetrieveWords) : Vi
         .autoConnect(0)
 
 
-    private fun actionFromIntent(intent: HomeIntent): HomeActionV2 {
+    private fun actionFromIntent(intent: HomeIntent): HomeAction {
         return when (intent) {
             is HomeIntent.CommonIntent -> {
                 if (intent.intentKey == HomeIntent.START) {
-                    HomeActionV2.Load
+                    HomeAction.Load
                 } else {
-                    HomeActionV2.CommonAction(intent.intentKey)
+                    HomeAction.CommonAction(intent.intentKey)
                 }
             }
-            is HomeIntent.SelectLevelIntent -> HomeActionV2.SelectLevel(intent.levelId)
-            is HomeIntent.SelectAnswerIntent -> HomeActionV2.SelectAnswer(intent.option)
+            is HomeIntent.SelectLevelIntent -> HomeAction.SelectLevel(intent.levelId)
+            is HomeIntent.SelectAnswerIntent -> HomeAction.SelectAnswer(intent.option)
             else -> throw IllegalArgumentException("unknown intent")
 
 

@@ -1,7 +1,7 @@
 package br.com.roquebuarque.fallingwords.feature.home.domain
 
 import br.com.roquebuarque.fallingwords.data.Repository
-import br.com.roquebuarque.fallingwords.feature.home.presentation.HomeActionV2
+import br.com.roquebuarque.fallingwords.feature.home.presentation.HomeAction
 import br.com.roquebuarque.fallingwords.feature.home.presentation.HomeResult
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
@@ -11,20 +11,20 @@ import javax.inject.Inject
 
 class RetrieveWords @Inject constructor(private val api: Repository) {
 
-    fun transformerFromAction(): ObservableTransformer<HomeActionV2, HomeResult> {
+    fun transformerFromAction(): ObservableTransformer<HomeAction, HomeResult> {
         return ObservableTransformer { action ->
             action.publish { shared ->
                 Observable.mergeArray(
-                    shared.ofType(HomeActionV2.CommonAction::class.java).compose(loadActions()),
-                    shared.ofType(HomeActionV2.Load::class.java).compose(loadWords()),
-                    shared.ofType(HomeActionV2.SelectLevel::class.java).compose(selectLevel()),
-                    shared.ofType(HomeActionV2.SelectAnswer::class.java).compose(selectAnswer())
+                    shared.ofType(HomeAction.CommonAction::class.java).compose(loadActions()),
+                    shared.ofType(HomeAction.Load::class.java).compose(loadWords()),
+                    shared.ofType(HomeAction.SelectLevel::class.java).compose(selectLevel()),
+                    shared.ofType(HomeAction.SelectAnswer::class.java).compose(selectAnswer())
                     )
             }
         }
     }
 
-    private fun loadActions(): ObservableTransformer<HomeActionV2.CommonAction, HomeResult> =
+    private fun loadActions(): ObservableTransformer<HomeAction.CommonAction, HomeResult> =
         ObservableTransformer { action ->
             action.flatMap {
                 Observable.just(it)
@@ -38,7 +38,7 @@ class RetrieveWords @Inject constructor(private val api: Repository) {
 
 
 
-    private fun selectAnswer(): ObservableTransformer<HomeActionV2.SelectAnswer, HomeResult> =
+    private fun selectAnswer(): ObservableTransformer<HomeAction.SelectAnswer, HomeResult> =
         ObservableTransformer { action ->
             action.flatMap {
                 Observable.just(it)
@@ -51,7 +51,7 @@ class RetrieveWords @Inject constructor(private val api: Repository) {
             }
         }
 
-    private fun loadWords(): ObservableTransformer<HomeActionV2.Load, HomeResult> {
+    private fun loadWords(): ObservableTransformer<HomeAction.Load, HomeResult> {
         return ObservableTransformer { action ->
             action.flatMap {
                 api.fetchWords()
@@ -71,7 +71,7 @@ class RetrieveWords @Inject constructor(private val api: Repository) {
     }
 
 
-    private fun selectLevel(): ObservableTransformer<HomeActionV2.SelectLevel, HomeResult> =
+    private fun selectLevel(): ObservableTransformer<HomeAction.SelectLevel, HomeResult> =
         ObservableTransformer { action ->
             action.flatMap {
                 Observable.just(it.levelId)

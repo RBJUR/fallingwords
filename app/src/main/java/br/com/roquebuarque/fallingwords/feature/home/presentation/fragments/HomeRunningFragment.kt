@@ -56,7 +56,7 @@ class HomeRunningFragment : Fragment() {
                 override fun onGlobalLayout() {
                     txtTranslationWordRunning.animate()
                         .setInterpolator(BounceInterpolator())
-                        .translationY(((screenHeight - btnRightRunning.height * 4).toFloat()))
+                        .translationY(((screenHeight - btnRightRunning.height * 5).toFloat()))
                         .setDuration(time)
                         .start()
 

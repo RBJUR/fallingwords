@@ -20,7 +20,8 @@ object StateMapper {
                     result.type == HomeResult.RUNNING_GAME -> previousState.copy(
                         type = HomeState.RUNNING,
                         time = result.time,
-                        size = result.size
+                        size = result.size,
+                        data = previousState.data.take(previousState.data.size/result.size)
                     )
                     result.type == HomeResult.ANSWER_RESULT -> {
 

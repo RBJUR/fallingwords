@@ -21,7 +21,6 @@ data class HomeState(
         const val LEVEL = 3
         const val RUNNING = 4
         const val RESULT = 5
-        const val NEXT = 6
         const val FINISH = 7
 
         fun idle(): HomeState {

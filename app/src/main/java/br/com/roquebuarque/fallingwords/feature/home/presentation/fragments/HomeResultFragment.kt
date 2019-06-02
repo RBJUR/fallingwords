@@ -15,21 +15,24 @@ class HomeResultFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater.inflate(R.layout.fragment_home_result, container, false)
-        arguments?.let {
-            view.txtResultRunning.text = if (it.getBoolean(ARG_RESULT, false)) "RIGHT ANSWER :)" else "WRONG ANSWER:("
+
+        with(view) {
+            arguments?.let {
+                resultView.setAnimation(if (it.getBoolean(ARG_RESULT, false)) "success.json" else "error.json")
+                resultView.playAnimation()
+            }
+
+            Handler().postDelayed({
+                callback()
+            }, 2000)
         }
 
-        Handler().postDelayed({
-            callback()
-        }, 2000)
         return view
     }
 
 
     companion object {
-
         private const val ARG_RESULT = "answer_result"
-
         private lateinit var callback: () -> Unit
 
         fun newInstance(result: Boolean, callback: () -> Unit): HomeResultFragment {

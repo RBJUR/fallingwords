@@ -1,6 +1,8 @@
 package br.com.roquebuarque.fallingwords.feature.home.presentation.activities
 
 import android.os.Bundle
+import android.transition.Slide
+import android.view.Gravity
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -60,14 +62,28 @@ class HomeActivity : BaseActivityInjecting<HomeComponent>() {
             HomeState.START -> HomeStartFragment.newInstance(::start)
             HomeState.LEVEL -> HomeLevelFragment.newInstance(::level)
             HomeState.RESULT -> HomeResultFragment.newInstance(state.result, ::result)
-            HomeState.FINISH -> HomeFinishFragment.newInstance(::finishIntent)
+            HomeState.FINISH -> with(state){
+                HomeFinishFragment.newInstance(
+                countRight = countRight,
+                countWrong = countWrong,
+                size = state.data.size,
+                callback = ::finishIntent)
+            }
             HomeState.RUNNING -> with(state) {
-                HomeRunningFragment.newInstance(data[index].eng, data[index].spa, (time * 1000).toLong(), ::next)
+                HomeRunningFragment.newInstance(
+                    mainWord = data[index].eng,
+                    translationWord = data[index].spa,
+                    time = (time * 1000).toLong(),
+                    callback = ::next)
             }
             else -> null
         }
 
         fragment?.let {
+
+            val mainTransition = Slide(Gravity.END)
+            fragment.enterTransition = mainTransition
+
             fm.beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit()

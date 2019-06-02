@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import br.com.roquebuarque.fallingwords.feature.home.domain.RetrieveWords
 import io.reactivex.Observable
-import io.reactivex.ObservableTransformer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
@@ -21,16 +20,6 @@ class HomeViewModel @Inject constructor(private val usecase: RetrieveWords) : Vi
         compositeDisposable.add(compose().subscribe { state.value = it })
     }
 
-    private val intentFilter: ObservableTransformer<HomeIntent, HomeIntent>
-        get() = ObservableTransformer { intents ->
-            intents.publish { shared ->
-                Observable.merge<HomeIntent>(
-                    shared.ofType(HomeIntent.InitialIntent::class.java).take(1),
-                    shared.filter { it != HomeIntent.InitialIntent }
-                )
-            }
-        }
-
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.clear()
@@ -41,7 +30,6 @@ class HomeViewModel @Inject constructor(private val usecase: RetrieveWords) : Vi
     }
 
     private fun compose() = intentsSubject
-        .compose(intentFilter)
         .map(this::actionFromIntent)
         .compose(usecase.transformerFromAction())
         .scan(HomeState.idle(), reducer)
@@ -50,14 +38,17 @@ class HomeViewModel @Inject constructor(private val usecase: RetrieveWords) : Vi
         .autoConnect(0)
 
 
-    private fun actionFromIntent(intent: HomeIntent): HomeAction {
+    private fun actionFromIntent(intent: HomeIntent): HomeActionV2 {
         return when (intent) {
-            is HomeIntent.InitialIntent -> HomeAction.Start
-            is HomeIntent.StartIntent -> HomeAction.Load
-            is HomeIntent.ResultIntent -> HomeAction.Result
-            is HomeIntent.Finish -> HomeAction.Finish
-            is HomeIntent.SelectLevelIntent -> HomeAction.SelectLevel(intent.levelId)
-            is HomeIntent.SelectAnswerIntent -> HomeAction.SelectAnswer(intent.option)
+            is HomeIntent.CommonIntent -> {
+                if (intent.intentKey == HomeIntent.START) {
+                    HomeActionV2.Load
+                } else {
+                    HomeActionV2.CommonAction(intent.intentKey)
+                }
+            }
+            is HomeIntent.SelectLevelIntent -> HomeActionV2.SelectLevel(intent.levelId)
+            is HomeIntent.SelectAnswerIntent -> HomeActionV2.SelectAnswer(intent.option)
             else -> throw IllegalArgumentException("unknown intent")
 
 
@@ -65,8 +56,8 @@ class HomeViewModel @Inject constructor(private val usecase: RetrieveWords) : Vi
     }
 
     companion object {
-        private val reducer = BiFunction { previousState: HomeState, result: WordResult ->
-           StateMapper(previousState, result)
+        private val reducer = BiFunction { previousState: HomeState, result: HomeResult ->
+            StateMapper(previousState, result)
         }
     }
 }

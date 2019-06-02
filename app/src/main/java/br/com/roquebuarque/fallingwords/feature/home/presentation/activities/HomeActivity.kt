@@ -15,15 +15,11 @@ import br.com.roquebuarque.fallingwords.feature.home.presentation.HomeViewModel
 import br.com.roquebuarque.fallingwords.feature.home.presentation.fragments.*
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
-import timber.log.Timber
 import javax.inject.Inject
 
 class HomeActivity : BaseActivityInjecting<HomeComponent>() {
 
-    private val initialIntent by lazy { PublishSubject.create<HomeIntent.InitialIntent>() }
-    private val finishIntent by lazy { PublishSubject.create<HomeIntent.Finish>() }
-    private val startIntent by lazy { PublishSubject.create<HomeIntent.StartIntent>() }
-    private val resultIntent by lazy { PublishSubject.create<HomeIntent.ResultIntent>() }
+    private val commonIntent by lazy { PublishSubject.create<HomeIntent.CommonIntent>() }
     private val selectLevelIntent by lazy { PublishSubject.create<HomeIntent.SelectLevelIntent>() }
     private val selectAnswerIntent by lazy { PublishSubject.create<HomeIntent.SelectAnswerIntent>() }
 
@@ -54,7 +50,7 @@ class HomeActivity : BaseActivityInjecting<HomeComponent>() {
     }
 
     private fun create() {
-        initialIntent.onNext(HomeIntent.InitialIntent)
+        commonIntent.onNext(HomeIntent.CommonIntent(HomeIntent.INITIAL))
     }
 
     private fun render(state: HomeState) {
@@ -65,9 +61,10 @@ class HomeActivity : BaseActivityInjecting<HomeComponent>() {
         when {
             state.type == HomeState.START -> fragment = HomeStartFragment.newInstance(::start)
             state.type == HomeState.LEVEL -> fragment = HomeLevelFragment.newInstance(::level)
-            state.type == HomeState.RESULT -> fragment = HomeResultFragment.newInstance(state.result,::result)
-            state.type == HomeState.FINISH -> fragment = HomeFinishFragment.newInstance(){finishIntent.onNext(HomeIntent.Finish)}
-            state.type == HomeState.RUNNING  -> fragment =
+            state.type == HomeState.RESULT -> fragment = HomeResultFragment.newInstance(state.result, ::result)
+            state.type == HomeState.FINISH -> fragment =
+                HomeFinishFragment.newInstance(::finishIntent)
+            state.type == HomeState.RUNNING -> fragment =
                 HomeRunningFragment.newInstance(
                     state.data[state.index].eng,
                     state.data[state.index].spa,
@@ -82,31 +79,32 @@ class HomeActivity : BaseActivityInjecting<HomeComponent>() {
         }
     }
 
+    private fun finishIntent() {
+        commonIntent.onNext(HomeIntent.CommonIntent(HomeIntent.FINISH))
+    }
+
     private fun level(levelSelected: Int) {
         selectLevelIntent.onNext(HomeIntent.SelectLevelIntent(levelSelected))
     }
 
     private fun result() {
-        resultIntent.onNext(HomeIntent.ResultIntent)
+        commonIntent.onNext(HomeIntent.CommonIntent(HomeIntent.RESULT))
     }
 
-    private fun next(option:Int) {
+    private fun next(option: Int) {
         selectAnswerIntent.onNext(HomeIntent.SelectAnswerIntent(option))
     }
 
     private fun intents(): Observable<HomeIntent> {
-        return Observable.mergeArray(
-            initialIntent,
-            startIntent,
+        return Observable.merge(
+            commonIntent,
             selectLevelIntent,
-            selectAnswerIntent,
-            resultIntent,
-            finishIntent
+            selectAnswerIntent
         )
     }
 
     private fun start() {
-        startIntent.onNext(HomeIntent.StartIntent)
+        commonIntent.onNext(HomeIntent.CommonIntent(HomeIntent.START))
     }
 
     override fun onInject(component: HomeComponent) {

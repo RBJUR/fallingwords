@@ -1,13 +1,17 @@
 package br.com.roquebuarque.fallingwords.feature.home.presentation
 
-import br.com.roquebuarque.fallingwords.feature.base.BaseState
+import br.com.roquebuarque.fallingwords.feature.base.BaseIntent
 
-sealed class HomeIntent : BaseState {
+sealed class HomeIntent : BaseIntent {
 
-    object InitialIntent : HomeIntent()
-    object StartIntent : HomeIntent()
-    object ResultIntent : HomeIntent()
-    object Finish : HomeIntent()
+
+    companion object {
+        const val INITIAL = 0
+        const val START = 1
+        const val RESULT = 2
+        const val FINISH = 3
+    }
+    data class CommonIntent(val intentKey: Int) : HomeIntent()
     data class SelectLevelIntent(val levelId: Int) : HomeIntent()
     data class SelectAnswerIntent(val option: Int) : HomeIntent()
 

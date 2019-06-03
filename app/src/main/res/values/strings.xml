@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Falling Words</string>
-
-    <!--HOME ACTIVITY -->
     <string name="home_description">We are so happy to see you! It is a simple word game\n\n1- You need to answer if the translation is right or wrong.\n2- You have time to answer.\n\nAre you ready?
     </string>
     <string name="home_title">Welcome</string>
@@ -12,8 +10,10 @@
     <string name="medium">Medium</string>
     <string name="hard">Hard</string>
     <string name="wrong">WRONG</string>
-    <string name="right">RIGHT</string>
     <string name="play_again">Play again</string>
     <string name="score">SCORE</string>
     <string name="correct">CORRECT</string>
+    <string name="total_right">Total Right: %1$d</string>
+    <string name="total_wrong">Total Wrong: %1$d</string>
+    <string name="total_question">Total Questions: %1$d</string>
 </resources>

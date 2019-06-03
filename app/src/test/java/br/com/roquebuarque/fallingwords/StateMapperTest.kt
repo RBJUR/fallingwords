@@ -1,10 +1,8 @@
 package br.com.roquebuarque.fallingwords
 
 import br.com.roquebuarque.fallingwords.data.WordResponse
-import br.com.roquebuarque.fallingwords.feature.home.domain.LevelMapper
 import br.com.roquebuarque.fallingwords.feature.home.presentation.HomeResult
 import br.com.roquebuarque.fallingwords.feature.home.presentation.HomeState
-import br.com.roquebuarque.fallingwords.feature.home.presentation.IntentKey
 import br.com.roquebuarque.fallingwords.feature.home.presentation.StateMapper
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.junit.Before
@@ -13,7 +11,7 @@ import org.junit.Test
 
 class StateMapperTest {
 
-    lateinit var previousState: HomeState
+    private lateinit var previousState: HomeState
 
     @Before
     fun setup() {

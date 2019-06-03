@@ -36,9 +36,9 @@ class HomeViewModelTest {
     @Mock
     lateinit var observer: Observer<HomeState>
 
-    lateinit var viewModel: HomeViewModel
+    private lateinit var viewModel: HomeViewModel
 
-    lateinit var homeState: HomeState
+    private lateinit var homeState: HomeState
 
     @Before
     fun setup() {
@@ -49,7 +49,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `should process from CommonIntent Initial and return HomeState with`() {
+    fun `should process from CommonIntent Initial and return HomeState`() {
 
         whenever(repository.fetchWords()).thenReturn(Observable.just(mockData()))
 
@@ -59,6 +59,28 @@ class HomeViewModelTest {
             homeState.copy(
                 type = HomeState.START
             )
+        )
+    }
+
+    @Test
+    fun `should process from SelectLevelIntent and return HomeState`() {
+
+        viewModel.processIntents(Observable.just(HomeIntent.SelectLevelIntent(levelId = 1)))
+
+        //Just verifying if my live data is changed, the fields are testing into MapperTest
+        verify(observer).onChanged(
+            viewModel.state.value
+        )
+    }
+
+    @Test
+    fun `should process from SelectAnswerIntent and return HomeState`() {
+
+        viewModel.processIntents(Observable.just(HomeIntent.SelectAnswerIntent(option = 1)))
+
+        //Just verifying if my live data is changed, the fields are testing into MapperTest
+        verify(observer).onChanged(
+            viewModel.state.value
         )
     }
 

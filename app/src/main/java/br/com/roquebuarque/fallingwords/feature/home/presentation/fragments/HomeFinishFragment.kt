@@ -20,9 +20,9 @@ class HomeFinishFragment : Fragment() {
         with(view) {
 
             arguments?.let {
-                txtRightFinish.text = "Total Right: " + it.getInt(ARG_TOTAL_RIGHT)
-                txtWrongFinish.text = "Total Wrong: " + it.getInt(ARG_TOTAL_WRONG)
-                txtTotalFinish.text = "Total Questions: " + it.getInt(ARG_TOTAL_QUESTION)
+                txtRightFinish.text = String.format(getString(R.string.total_right), it.getInt(ARG_TOTAL_RIGHT))
+                txtWrongFinish.text = String.format(getString(R.string.total_wrong), it.getInt(ARG_TOTAL_WRONG))
+                txtTotalFinish.text = String.format(getString(R.string.total_question), it.getInt(ARG_TOTAL_QUESTION))
 
                 lottieViewFinish.setAnimation(if (it.getInt(ARG_TOTAL_QUESTION) / 2 < it.getInt(ARG_TOTAL_RIGHT)) "trophy.json" else "sad.json")
                 lottieViewFinish.playAnimation()

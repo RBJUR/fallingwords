@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.transition.Slide
 import android.view.Gravity
 import androidx.annotation.LayoutRes
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import br.com.roquebuarque.fallingwords.R
 import br.com.roquebuarque.fallingwords.application.AppApplication

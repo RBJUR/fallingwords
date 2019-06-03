@@ -16,7 +16,7 @@ data class HomeState(
 ) : BaseState {
     companion object {
         const val INFLIGHT = 0
-        const val IDLE = 1
+        private const val IDLE = 1
         const val START = 2
         const val LEVEL = 3
         const val RUNNING = 4

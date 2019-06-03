@@ -41,8 +41,8 @@ class RetrieveWords @Inject constructor(private val api: Repository) {
     private fun selectAnswer(): ObservableTransformer<HomeAction.SelectAnswer, HomeResult> =
         ObservableTransformer { action ->
             action.flatMap {
-                Observable.just(it)
-                    .map { item -> HomeResult.Success(type = HomeResult.ANSWER_RESULT, selectedAnswer = item.option) }
+                Observable.just(it.option)
+                    .map { item -> HomeResult.Success(type = HomeResult.ANSWER_RESULT, selectedAnswer = item) }
                     .cast(HomeResult::class.java)
                     .onErrorReturn { t -> HomeResult.Failure(t) }
                     .subscribeOn(Schedulers.io())

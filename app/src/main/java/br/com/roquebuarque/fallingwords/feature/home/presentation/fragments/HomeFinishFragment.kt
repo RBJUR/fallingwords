@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import androidx.fragment.app.Fragment
 import br.com.roquebuarque.fallingwords.R
 import kotlinx.android.synthetic.main.fragment_home_finish.view.*
@@ -26,6 +27,21 @@ class HomeFinishFragment : Fragment() {
 
                 lottieViewFinish.setAnimation(if (it.getInt(ARG_TOTAL_QUESTION) / 2 < it.getInt(ARG_TOTAL_RIGHT)) "trophy.json" else "sad.json")
                 lottieViewFinish.playAnimation()
+
+
+                customProgressFinish.viewTreeObserver.addOnGlobalLayoutListener(object :
+                    ViewTreeObserver.OnGlobalLayoutListener {
+                    override fun onGlobalLayout() {
+
+                        customProgressFinish.setup(
+                            countCorrect = it.getInt(ARG_TOTAL_RIGHT),
+                            countWrong = it.getInt(ARG_TOTAL_WRONG),
+                            totalQuestion = it.getInt(ARG_TOTAL_QUESTION)
+                        )
+
+                        customProgressFinish.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    }
+                })
             }
 
             btnPlayAgainFinish.setOnClickListener {

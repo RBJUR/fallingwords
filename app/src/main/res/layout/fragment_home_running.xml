@@ -5,11 +5,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+    <br.com.roquebuarque.fallingwords.feature.component.CustomProgress
+            android:id="@+id/customProgressRunning"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"/>
+
     <TextView
             android:id="@+id/txtTimeRunning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
+            android:layout_below="@+id/customProgressRunning"
             tools:text="15s"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"

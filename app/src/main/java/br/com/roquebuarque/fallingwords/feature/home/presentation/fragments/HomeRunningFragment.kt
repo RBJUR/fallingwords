@@ -29,11 +29,12 @@ class HomeRunningFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        txtMainWordRunning.text = arguments?.getString(ARG_MAIN_WORD)
-        txtTranslationWordRunning.text = arguments?.getString(ARG_TRANSLATION_WORD)
+        arguments?.let {
 
-        val time = arguments?.getLong(ARG_TIME)
-        time?.let {
+            txtMainWordRunning.text = it.getString(ARG_MAIN_WORD)
+            txtTranslationWordRunning.text = it.getString(ARG_TRANSLATION_WORD)
+
+            val time = it.getLong(ARG_TIME)
             timer = object : CountDownTimer(time, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
                     txtTimeRunning.text = (millisUntilFinished / 1000).toString()
@@ -51,7 +52,7 @@ class HomeRunningFragment : Fragment() {
             display?.getSize(size)
             val screenHeight = size.y
 
-            txtTranslationWordRunning.viewTreeObserver.addOnGlobalLayoutListener(object:
+            txtTranslationWordRunning.viewTreeObserver.addOnGlobalLayoutListener(object :
                 ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
                     txtTranslationWordRunning.animate()
@@ -60,12 +61,16 @@ class HomeRunningFragment : Fragment() {
                         .setDuration(time)
                         .start()
 
+                    customProgressRunning.setup(
+                        countCorrect = it.getInt(ARG_COUNT_CORRECT),
+                        countWrong = it.getInt(ARG_COUNT_WRONG),
+                        totalQuestion = it.getInt(ARG_COUNT_TOTAL)
+                    )
+
                     txtTranslationWordRunning.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 }
             })
         }
-
-
 
         btnRightRunning.setOnClickListener {
             timer?.cancel()
@@ -76,6 +81,7 @@ class HomeRunningFragment : Fragment() {
             timer?.cancel()
             callback(IntentKey.WRONG)
         }
+
     }
 
     override fun onPause() {
@@ -88,6 +94,9 @@ class HomeRunningFragment : Fragment() {
         private const val ARG_MAIN_WORD = "main_word"
         private const val ARG_TRANSLATION_WORD = "translation_word"
         private const val ARG_TIME = "running_time"
+        private const val ARG_COUNT_CORRECT = "count_correct"
+        private const val ARG_COUNT_WRONG = "count_wrong"
+        private const val ARG_COUNT_TOTAL = "count_total"
 
         private lateinit var callback: (Int) -> Unit
 
@@ -95,6 +104,9 @@ class HomeRunningFragment : Fragment() {
             mainWord: String,
             translationWord: String,
             time: Long,
+            countCorrect: Int,
+            countWrong: Int,
+            countTotal: Int,
             callback: (Int) -> Unit
         ): HomeRunningFragment {
             this.callback = callback
@@ -104,6 +116,9 @@ class HomeRunningFragment : Fragment() {
                 putString(ARG_MAIN_WORD, mainWord)
                 putString(ARG_TRANSLATION_WORD, translationWord)
                 putLong(ARG_TIME, time)
+                putInt(ARG_COUNT_CORRECT, countCorrect)
+                putInt(ARG_COUNT_WRONG, countWrong)
+                putInt(ARG_COUNT_TOTAL, countTotal)
             }
 
             fragment.arguments = bundle

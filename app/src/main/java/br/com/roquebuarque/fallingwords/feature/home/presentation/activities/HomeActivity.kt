@@ -73,6 +73,9 @@ class HomeActivity : BaseActivityInjecting<HomeComponent>() {
                     mainWord = data[index].eng,
                     translationWord = data[index].spa,
                     time = (time * 1000).toLong(),
+                    countCorrect = countRight,
+                    countWrong = countWrong,
+                    countTotal = data.size,
                     callback = ::next)
             }
             else -> null

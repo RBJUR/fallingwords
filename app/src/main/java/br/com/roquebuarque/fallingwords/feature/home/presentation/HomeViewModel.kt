@@ -14,7 +14,8 @@ import javax.inject.Inject
 @ActivityScope
 class HomeViewModel @Inject constructor(private val usecase: RetrieveWords) : ViewModel() {
 
-    private val intentsSubject: PublishSubject<HomeIntent> = PublishSubject.create()
+    //https://medium.com/@nazarivanchuk/types-of-subjects-in-rxjava-96f3a0c068e4
+    private val intentsSubject: PublishSubject<HomeIntent> = PublishSubject.create()//http://reactivex.io/RxJava/javadoc/io/reactivex/subjects/PublishSubject.html
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     val state: MutableLiveData<HomeState> = MutableLiveData()
 
@@ -25,7 +26,8 @@ class HomeViewModel @Inject constructor(private val usecase: RetrieveWords) : Vi
 
     override fun onCleared() {
         super.onCleared()
-        compositeDisposable.clear()
+        Timber.d("Instance: $compositeDisposable")
+        compositeDisposable.dispose()
     }
 
     fun processIntents(intents: Observable<HomeIntent>) {

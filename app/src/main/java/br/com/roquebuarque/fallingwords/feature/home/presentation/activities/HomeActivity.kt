@@ -7,7 +7,6 @@ import androidx.annotation.LayoutRes
 import androidx.lifecycle.Observer
 import br.com.roquebuarque.fallingwords.R
 import br.com.roquebuarque.fallingwords.application.AppApplication
-import br.com.roquebuarque.fallingwords.application.di.DaggerApplicationComponent
 import br.com.roquebuarque.fallingwords.feature.base.BaseActivityInjecting
 import br.com.roquebuarque.fallingwords.feature.di.ActivityModule
 import br.com.roquebuarque.fallingwords.application.di.HomeComponent

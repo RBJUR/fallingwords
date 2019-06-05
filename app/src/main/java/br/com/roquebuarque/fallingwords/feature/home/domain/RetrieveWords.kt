@@ -18,7 +18,7 @@ class RetrieveWords @Inject constructor(private val api: Repository) {
 
         return ObservableTransformer { action ->
             action.publish { shared ->
-                Observable.mergeArray(
+                Observable.merge(
                     shared.ofType(HomeAction.CommonAction::class.java).compose(loadActions()),
                     shared.ofType(HomeAction.Load::class.java).compose(loadWords()),
                     shared.ofType(HomeAction.SelectLevel::class.java).compose(selectLevel()),

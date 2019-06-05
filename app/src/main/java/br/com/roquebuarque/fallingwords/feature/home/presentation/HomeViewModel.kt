@@ -18,11 +18,8 @@ class HomeViewModel @Inject constructor(private val usecase: RetrieveWords) : Vi
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     val state: MutableLiveData<HomeState> = MutableLiveData()
 
-
     init {
-
         Timber.d("Instance: $usecase")
-
         compositeDisposable.add(compose().subscribe { state.value = it })
     }
 
@@ -37,12 +34,12 @@ class HomeViewModel @Inject constructor(private val usecase: RetrieveWords) : Vi
 
     private fun compose() = intentsSubject
         .map(this::actionFromIntent)
-        .compose(usecase.transformerFromAction())
-        .scan(HomeState.idle(), reducer)
-        .distinctUntilChanged()
-        .replay(1)
-        .autoConnect(0)
-
+        .compose(usecase.transformerFromAction())//ObservableSource by applying a particular Transformer function to it
+        .scan(HomeState.idle(), reducer)//Increase my result
+        .distinctUntilChanged()//Only emit if the current value is different from the last
+        .replay(1)//ensure that all observers see the same sequence of emitted items
+        .autoConnect(0)//To make sure that a ConnectableObserverable automatically calls the connect()
+        //https://github.com/ReactiveX/RxJava/wiki/Connectable-Observable-Operators
 
     private fun actionFromIntent(intent: HomeIntent) = HomeIntentMapper(intent)
 

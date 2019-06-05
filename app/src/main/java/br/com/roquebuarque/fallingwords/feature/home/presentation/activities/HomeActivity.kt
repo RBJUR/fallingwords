@@ -5,10 +5,11 @@ import android.transition.Slide
 import android.view.Gravity
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import br.com.roquebuarque.fallingwords.R
 import br.com.roquebuarque.fallingwords.application.AppApplication
 import br.com.roquebuarque.fallingwords.feature.base.BaseActivityInjecting
-import br.com.roquebuarque.fallingwords.feature.di.ActivityModule
+import br.com.roquebuarque.fallingwords.application.di.ActivityModule
 import br.com.roquebuarque.fallingwords.application.di.HomeComponent
 import br.com.roquebuarque.fallingwords.feature.home.presentation.HomeIntent
 import br.com.roquebuarque.fallingwords.feature.home.presentation.HomeState
@@ -18,6 +19,8 @@ import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
+import androidx.lifecycle.ViewModelProviders
+
 
 class HomeActivity : BaseActivityInjecting<HomeComponent>() {
 
@@ -26,7 +29,9 @@ class HomeActivity : BaseActivityInjecting<HomeComponent>() {
     private val selectAnswerIntent by lazy { PublishSubject.create<HomeIntent.SelectAnswerIntent>() }
 
     @Inject
-    lateinit var viewModel: HomeViewModel
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private lateinit var viewModel: HomeViewModel
 
     private val layoutResId: Int
         @LayoutRes
@@ -37,6 +42,7 @@ class HomeActivity : BaseActivityInjecting<HomeComponent>() {
         super.onCreate(savedInstanceState)
         setContentView(layoutResId)
 
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
         viewModel.processIntents(intents())
         viewModel.state.observe(this, Observer {
             if (it != null) {
@@ -64,12 +70,13 @@ class HomeActivity : BaseActivityInjecting<HomeComponent>() {
             HomeState.START -> HomeStartFragment.newInstance(::start)
             HomeState.LEVEL -> HomeLevelFragment.newInstance(::level)
             HomeState.RESULT -> HomeResultFragment.newInstance(state.result, ::result)
-            HomeState.FINISH -> with(state){
+            HomeState.FINISH -> with(state) {
                 HomeFinishFragment.newInstance(
-                countRight = countRight,
-                countWrong = countWrong,
-                size = state.data.size,
-                callback = ::finishIntent)
+                    countRight = countRight,
+                    countWrong = countWrong,
+                    size = state.data.size,
+                    callback = ::finishIntent
+                )
             }
             HomeState.RUNNING -> with(state) {
                 HomeRunningFragment.newInstance(
@@ -79,7 +86,8 @@ class HomeActivity : BaseActivityInjecting<HomeComponent>() {
                     countCorrect = countRight,
                     countWrong = countWrong,
                     countTotal = data.size,
-                    callback = ::next)
+                    callback = ::next
+                )
             }
             else -> null
         }

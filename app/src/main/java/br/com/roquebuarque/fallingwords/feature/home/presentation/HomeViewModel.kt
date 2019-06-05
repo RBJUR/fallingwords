@@ -2,7 +2,7 @@ package br.com.roquebuarque.fallingwords.feature.home.presentation
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import br.com.roquebuarque.fallingwords.feature.di.ActivityScope
+import br.com.roquebuarque.fallingwords.application.di.ActivityScope
 import br.com.roquebuarque.fallingwords.feature.home.domain.RetrieveWords
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
@@ -12,7 +12,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @ActivityScope
-class HomeViewModel @Inject constructor(private val usecase: RetrieveWords) : ViewModel() {
+class HomeViewModel @Inject constructor(private val usecase: RetrieveWords):ViewModel()  {
 
     //https://medium.com/@nazarivanchuk/types-of-subjects-in-rxjava-96f3a0c068e4
     private val intentsSubject: PublishSubject<HomeIntent> = PublishSubject.create()//http://reactivex.io/RxJava/javadoc/io/reactivex/subjects/PublishSubject.html
@@ -24,11 +24,11 @@ class HomeViewModel @Inject constructor(private val usecase: RetrieveWords) : Vi
         compositeDisposable.add(compose().subscribe { state.value = it })
     }
 
-    override fun onCleared() {
+  /* override fun onCleared() {
         super.onCleared()
         Timber.d("Instance: $compositeDisposable")
         compositeDisposable.dispose()
-    }
+    }*/
 
     fun processIntents(intents: Observable<HomeIntent>) {
         intents.subscribe(intentsSubject)

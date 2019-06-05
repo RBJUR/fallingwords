@@ -5,7 +5,7 @@ import br.com.roquebuarque.fallingwords.application.di.ApplicationComponent
 import br.com.roquebuarque.fallingwords.application.di.DaggerApplicationComponent
 import timber.log.Timber
 
-class AppApplication:Application() {
+class AppApplication : Application() {
 
     private var component: ApplicationComponent? = null
 

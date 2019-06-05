@@ -1,4 +1,4 @@
-package br.com.roquebuarque.fallingwords.feature.di
+package br.com.roquebuarque.fallingwords.application.di
 
 import javax.inject.Scope
 

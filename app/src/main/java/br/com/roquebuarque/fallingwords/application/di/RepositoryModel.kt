@@ -10,6 +10,5 @@ class RepositoryModel {
 
     @Singleton
     @Provides
-
     fun provideRepository() = Repository()
 }

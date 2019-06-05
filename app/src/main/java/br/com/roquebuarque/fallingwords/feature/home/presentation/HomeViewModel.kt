@@ -2,13 +2,16 @@ package br.com.roquebuarque.fallingwords.feature.home.presentation
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import br.com.roquebuarque.fallingwords.feature.di.ActivityScope
 import br.com.roquebuarque.fallingwords.feature.home.domain.RetrieveWords
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.PublishSubject
+import timber.log.Timber
 import javax.inject.Inject
 
+@ActivityScope
 class HomeViewModel @Inject constructor(private val usecase: RetrieveWords) : ViewModel() {
 
     private val intentsSubject: PublishSubject<HomeIntent> = PublishSubject.create()
@@ -17,6 +20,9 @@ class HomeViewModel @Inject constructor(private val usecase: RetrieveWords) : Vi
 
 
     init {
+
+        Timber.d("Instance: $usecase")
+
         compositeDisposable.add(compose().subscribe { state.value = it })
     }
 

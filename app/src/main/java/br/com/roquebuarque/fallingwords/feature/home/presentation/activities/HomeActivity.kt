@@ -7,15 +7,17 @@ import androidx.annotation.LayoutRes
 import androidx.lifecycle.Observer
 import br.com.roquebuarque.fallingwords.R
 import br.com.roquebuarque.fallingwords.application.AppApplication
+import br.com.roquebuarque.fallingwords.application.di.DaggerApplicationComponent
 import br.com.roquebuarque.fallingwords.feature.base.BaseActivityInjecting
 import br.com.roquebuarque.fallingwords.feature.di.ActivityModule
-import br.com.roquebuarque.fallingwords.feature.home.di.HomeComponent
+import br.com.roquebuarque.fallingwords.application.di.HomeComponent
 import br.com.roquebuarque.fallingwords.feature.home.presentation.HomeIntent
 import br.com.roquebuarque.fallingwords.feature.home.presentation.HomeState
 import br.com.roquebuarque.fallingwords.feature.home.presentation.HomeViewModel
 import br.com.roquebuarque.fallingwords.feature.home.presentation.fragments.*
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
+import timber.log.Timber
 import javax.inject.Inject
 
 class HomeActivity : BaseActivityInjecting<HomeComponent>() {
@@ -42,6 +44,8 @@ class HomeActivity : BaseActivityInjecting<HomeComponent>() {
                 render(it)
             }
         })
+
+        Timber.d("Instance: $viewModel")
 
     }
 

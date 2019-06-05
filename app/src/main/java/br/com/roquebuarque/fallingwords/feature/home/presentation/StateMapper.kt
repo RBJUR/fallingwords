@@ -1,6 +1,5 @@
 package br.com.roquebuarque.fallingwords.feature.home.presentation
 
-import timber.log.Timber
 
 object StateMapper {
 
@@ -46,7 +45,6 @@ object StateMapper {
 
             }
             is HomeResult.Failure -> {
-                Timber.d("HomeResult: Failure")
                 previousState.copy(
                     error = result.error
                 )
@@ -54,7 +52,6 @@ object StateMapper {
             }
 
             is HomeResult.InFlight -> {
-                Timber.d("HomeResult: InFlight")
                 previousState.copy(type = HomeState.INFLIGHT)
             }
         }

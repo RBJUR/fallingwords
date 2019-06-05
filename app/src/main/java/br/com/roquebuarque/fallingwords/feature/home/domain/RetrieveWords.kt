@@ -7,11 +7,15 @@ import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 class RetrieveWords @Inject constructor(private val api: Repository) {
 
     fun transformerFromAction(): ObservableTransformer<HomeAction, HomeResult> {
+
+        Timber.d("Instance: $api")
+
         return ObservableTransformer { action ->
             action.publish { shared ->
                 Observable.mergeArray(

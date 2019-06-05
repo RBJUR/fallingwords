@@ -19,8 +19,9 @@ class AppApplication:Application() {
 
     fun getComponent(): ApplicationComponent {
         if (component == null) {
-            component = DaggerApplicationComponent.factory()
-                .create(applicationContext)
+            component = DaggerApplicationComponent
+                .create()
+
         }
         return component as ApplicationComponent
     }

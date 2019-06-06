@@ -12,10 +12,11 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @ActivityScope
-class HomeViewModel @Inject constructor(private val usecase: RetrieveWords):ViewModel()  {
+class HomeViewModel @Inject constructor(private val usecase: RetrieveWords) : ViewModel() {
 
     //https://medium.com/@nazarivanchuk/types-of-subjects-in-rxjava-96f3a0c068e4
-    private val intentsSubject: PublishSubject<HomeIntent> = PublishSubject.create()//http://reactivex.io/RxJava/javadoc/io/reactivex/subjects/PublishSubject.html
+    private val intentsSubject: PublishSubject<HomeIntent> =
+        PublishSubject.create()//http://reactivex.io/RxJava/javadoc/io/reactivex/subjects/PublishSubject.html
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     val state: MutableLiveData<HomeState> = MutableLiveData()
 
@@ -24,11 +25,11 @@ class HomeViewModel @Inject constructor(private val usecase: RetrieveWords):View
         compositeDisposable.add(compose().subscribe { state.value = it })
     }
 
-  /* override fun onCleared() {
+    override fun onCleared() {
         super.onCleared()
         Timber.d("Instance: $compositeDisposable")
         compositeDisposable.dispose()
-    }*/
+    }
 
     fun processIntents(intents: Observable<HomeIntent>) {
         intents.subscribe(intentsSubject)
@@ -41,7 +42,7 @@ class HomeViewModel @Inject constructor(private val usecase: RetrieveWords):View
         .distinctUntilChanged()//Only emit if the current value is different from the last
         .replay(1)//ensure that all observers see the same sequence of emitted items
         .autoConnect(0)//To make sure that a ConnectableObserverable automatically calls the connect()
-        //https://github.com/ReactiveX/RxJava/wiki/Connectable-Observable-Operators
+    //https://github.com/ReactiveX/RxJava/wiki/Connectable-Observable-Operators
 
     private fun actionFromIntent(intent: HomeIntent) = HomeIntentMapper(intent)
 

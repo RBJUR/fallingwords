@@ -9,6 +9,13 @@ Small language game, the player will see a word in language „one“ on the scr
 
 This project is 100% written in Kotlin.
 
+
+## Architecture
+
+MVI - User interaction with the UI is processed by business logic which brings change in the state. This new state is rendered on view and this newly updated view is shown to the user. This leads to a Unidirectional and Circular Data Flow.
+<img src=".github/mvi.png"/>
+
+
 ## ScreenShots
 <p float="left">
 <img src=".github/start.png" width="20%" height="20%"/>
